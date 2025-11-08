@@ -23,14 +23,13 @@ class Blogs extends Model
     /**
      * Elasticsearch'te index edilecek veriyi belirler
      */
-    public function toSearchableArray()
+    public function toSearchableArray(): array
     {
         return [
             'id' => $this->id,
             'title' => $this->title,
             'description' => $this->description,
             'author' => $this->author,
-            'created_at' => $this->created_at?->toISOString(),
         ];
     }
 
@@ -50,4 +49,21 @@ class Blogs extends Model
         // Tüm blogları index et (title ve description boş değilse)
         return !empty($this->title) && !empty($this->description);
     }
+
+    protected static function booted()
+    {
+        static::created(function ($blog) {
+            event(new \App\Events\BlogUpdatedSearch($blog));
+        });
+
+        static::updated(function ($blog) {
+            \Log::info('Blog updated event tetiklendi', ['id' => $blog->id]);
+            event(new \App\Events\BlogUpdatedSearch($blog));
+        });
+
+        static::deleted(function ($blog) {
+            $blog->unsearchable(); // Elasticsearch'ten kaldır
+        });
+    }
+
 }

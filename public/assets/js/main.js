@@ -24,10 +24,11 @@ document.addEventListener('DOMContentLoaded', function () {
                 return response.json(); // Başarılıysa JSON yanıtını oku
             })
             .then(data => {
+
                 console.log('Başarılı:', data);
-                alert('Veriler başarıyla kaydedildi!');
-                form.reset();
-                window.location.href = '/index';
+                alert(data.message);
+                window.location.href = data.href;
+
             })
             .catch(error => {
                 console.error('Hata:', error);

@@ -7,6 +7,7 @@ use App\Models\Blogs; // Kendi modelini burada kullan
 use Illuminate\Support\Facades\DB;
 use Elastic\Elasticsearch\Client;
 use Elastic\Elasticsearch\ClientBuilder;
+use App\Events\BlogUpdatedSearch;
 
 class BlogController extends Controller
 {
@@ -54,6 +55,11 @@ class BlogController extends Controller
         return response()->json(['data' => $results]);
     }
 
+    public function search()
+    {
+       return view('search' );
+    }
+
     public function store(Request $request)
     {  
         $validatedData = $request->validate([
@@ -68,9 +74,6 @@ class BlogController extends Controller
             $request->file('image')->storeAs('uploads', $imageName, 'public_uploads');
         }
 
-
-        // 3. Veritabanına kaydet
-        // Örnek:
         Blogs::create([
             'title' => $validatedData['title'],
             'author' => $validatedData['author'],
@@ -78,9 +81,9 @@ class BlogController extends Controller
             'image' => $imageName,
         ]);
 
-        // 4. Başarılı yanıt gönder
         return response()->json([
             'message' => 'Veriler başarıyla kaydedildi!',
+            'href' => '',
             'data' => $validatedData
         ], 200);
     }
@@ -113,9 +116,8 @@ class BlogController extends Controller
         return view('edit', compact('blogs'));
     }
 
-    public function update(Request $request   )
+    public function update(Request $request )
     {
-        // 1. Gelen verileri doğrula (Validation)
         $validatedData = $request->validate([
             'title' => 'required|string|max:255',
             'author' => 'required|string|max:255',
@@ -123,32 +125,25 @@ class BlogController extends Controller
           
         ]);
 
-          
-         
         if ($request->hasFile('image')) {
             $imageName = time() . '.' . $request->image->extension();
             $request->image->move(public_path('uploads'), $imageName);
             $validatedData['image'] = $imageName;
         }
 
-        // $data = [
-        //     'title' => $request->title,
-        //     'author' => $request->author,
-        //     'description' => $request->description,
-        //     'image' => $imageName,
-        // ];
+        // Blogs::where('id', $request->id)->update($validatedData);
 
-        Blogs::where('id', $request->id)->update($validatedData);
+        $blog = Blogs::find($request->id);
+        $blog->fill($validatedData);
+        $blog->save();
+
         return response()->json([
-            'message' => 'Veriler başarıyla kaydedildi!',
+            'message' => 'Veriler başarıyla güncellendi!',
+            'href' => $request->id,
             'data' => $validatedData
         ], 200);
     }
 
-    public function search()
-    {
-       return view('search' );
-    }
 
   
 }

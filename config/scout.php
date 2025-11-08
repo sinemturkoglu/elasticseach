@@ -1,5 +1,9 @@
 <?php
 
+// When running in Docker (Laravel Sail), use the service name 'elasticsearch'
+// Otherwise, use 'localhost' for local development outside Docker
+$defaultElasticHost = env('LARAVEL_SAIL') ? 'http://elasticsearch:9200' : 'http://localhost:9200';
+
 return [
 
     /*
@@ -16,7 +20,7 @@ return [
     |
     */
 
-    'driver' => env('SCOUT_DRIVER', 'elasticsearch'),
+    'driver' =>  env('SCOUT_DRIVER', 'database'),
 
     /*
     |--------------------------------------------------------------------------
@@ -130,28 +134,35 @@ return [
     |--------------------------------------------------------------------------
     */
 
-    'elasticsearch' => [
-        'hosts' => [
-            env('ELASTICSEARCH_HOST', 'localhost') . ':' . env('ELASTICSEARCH_PORT', '9200'),
+    'elastic' => [
+        'host' => env('ELASTICSEARCH_HOST', 'elasticsearch'),
+        'port' => env('ELASTICSEARCH_PORT', 9200),
+        'scheme' => env('ELASTICSEARCH_SCHEME', 'http'), // Veya https
+        'auth' => [
+            'username' => env('ELASTICSEARCH_USERNAME', 'elastic'), // Varsayılan kullanıcı adı
+            'password' => env('ELASTICSEARCH_PASSWORD', 'sizin_sifreniz'), // Konteyner başlatılırken oluşturulan şifre
         ],
-        'indices' => [
-            'settings' => [
-                'number_of_shards' => 1,
-                'number_of_replicas' => 0,
-            ],
-            'mappings' => [
-                'default' => [
-                    '_source' => [
-                        'enabled' => true,
-                    ],
-                    'properties' => [
-                        'id' => [
-                            'type' => 'keyword',
-                        ],
-                    ],
-                ],
-            ],
-        ],
+        // 'hosts' => [
+        //     env('SCOUT_ELASTIC_HOST', $defaultElasticHost)
+        // ],
+        // 'indices' => [
+        //     'settings' => [
+        //         'number_of_shards' => 1,
+        //         'number_of_replicas' => 0,
+        //     ],
+        //     'mappings' => [
+        //         'default' => [
+        //             '_source' => [
+        //                 'enabled' => true,
+        //             ],
+        //             'properties' => [
+        //                 'id' => [
+        //                     'type' => 'keyword',
+        //                 ],
+        //             ],
+        //         ],
+        //     ],
+        // ],
     ],
 
     /*
