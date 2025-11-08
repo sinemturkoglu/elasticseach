@@ -24,6 +24,7 @@ Uygulama, Laravel Scout paketi üzerinden Elasticsearch ile entegre edilmiştir 
 ✅ Event-Driven Architecture: Temiz ve bakımı kolay kod yapısı
 
 ✅ Queue Sistemi: Database driver ile basit ve etkili kuyruk yönetimi
+
 ✅ Laravel Scout: Elasticsearch entegrasyonu için Scout kullanımı
 
 ✅ Docker Support: Tüm servisler containerize edilmiş durumda
@@ -34,16 +35,24 @@ Uygulama, Laravel Scout paketi üzerinden Elasticsearch ile entegre edilmiştir 
 
 ✅ Seeder Support: Test verileri için factory ve seeder desteği
 
-### Premium Partners
+### 📋 Projeyi klonlarken unutma
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+
+✅ Environment dosyası oluştur
+
+✅ Composer bağımlılıklarını oluştur
+
+✅ Uygulama anahtarı oluştur
+
+✅ Veritabanı , Queue tablosu oluştur
+
+✅ Test verilerini yükle →  sail artisan db:seed 
+
+✅ Elasticsearch indexleme  →  sail artisan scout:import
+
+✅ Worker'ı başlat → sail artisan queue:work
+
+
 
 ## Contributing
 
