@@ -7,12 +7,17 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
-## About Laravel
+## About Laravel Elasticsearch
 
 📝 Blog Modülü (Laravel + Docker + Elasticsearch)
 
 Bu proje, Docker üzerinde çalışan bir Laravel uygulamasıdır.
-Blog modülü ile CRUD işlemleri yapılabilir ve veriler Elasticsearch ile indekslenerek hızlı arama imkânı sunar.
+Blog modülü ile CRUD (Create, Read, Update, Delete) işlemleri yapılabilir.
+
+Her ekleme, güncelleme veya silme işleminde Laravel’in Event & Listener yapısı devreye girerek ilgili blog verisini Elasticsearch indeksine otomatik olarak senkronize eder.
+Bu sayede arama sonuçları her zaman güncel, hızlı ve doğru olur.
+
+Uygulama, Laravel Scout paketi üzerinden Elasticsearch ile entegre edilmiştir ve tüm işlemler kuyruk sistemi (queue) aracılığıyla arka planda yönetilir.
 
 ## Learning Laravel
 
